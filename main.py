@@ -4,10 +4,9 @@ from docx import Document
 #from google.oauth2 import service_account
 
 # Configurar la clave de API de OpenAI
-openai.api_key = "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"
+openai.api_key = "tu api key aqui"
 
-# Configurar las credenciales de Google Docs
-#google_docs_credentials_path = "C:/Users/hp/Documents/script-gpt/pythonscript-400404-660a0c53a235.json"
+
 
 def get_chatgpt_response(prompt):
     try:
@@ -30,38 +29,7 @@ def get_chatgpt_response(prompt):
         print("Error al obtener respuesta de OpenAI:", e)
         return None
 
-def create_google_docs(content):
-    try:
-        credentials = service_account.Credentials.from_service_account_file(
-            google_docs_credentials_path,
-            scopes=['https://www.googleapis.com/auth/documents']
-        )
-        docs_service = build('docs', 'v1', credentials=credentials)
 
-        # Crear un nuevo documento en Google Docs
-        document = docs_service.documents().create().execute()
-        document_id = document['documentId']
-
-        docs_service.documents().batchUpdate(
-            documentId=document_id,
-            body={
-                "requests": [
-                    {
-                        "insertText": {
-                            "location": {
-                                "index": 1,
-                            },
-                            "text": content,
-                        }
-                    }
-                ]
-            }
-        ).execute()
-
-        return document_id
-    except Exception as e:
-        print("Error al crear el documento en Google Docs:", e)
-        return None
 
 
 def create_docx(content, filename):
